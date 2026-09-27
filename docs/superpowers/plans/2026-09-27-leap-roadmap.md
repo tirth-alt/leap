@@ -43,3 +43,31 @@ The first deploy happens in Stage 1 and every later stage redeploys, so the live
 | Stage 1 | Get an **NVIDIA API key** at build.nvidia.com. An **OpenRouter** key is optional (it's the fallback provider). |
 | Stage 1 | Log in to **Vercel** (`npx vercel login`). |
 | Stage 7 | Label 15+ goal/JD cases for the eval: yours plus friends' who agree to it. |
+
+## Carried into Stage 2 (from the Stage 1 final review)
+
+Open Stage 2 with a model-layer and data-layer hardening task:
+
+**Model layer**
+- **Time budget.** `LLM.structured` takes a deadline or `AbortSignal`. It skips the repair and the fallback once the budget is spent, and derives each call's timeout from what's left. `/api/scan` batches must finish in about 50s.
+- **Cut-off replies.** Record `finish_reason` and treat `length` as its own failure.
+- **Output limits per tier.** Set `max_tokens` for each tier from env vars.
+- **Repair prompt.** Strip `<think>` blocks from the previous reply before sending the repair prompt.
+- **Provider options.** Add an optional `extraBody` to `CompatConfig`, for Nemotron's reasoning switches if they turn out to be request fields.
+- **Metering.** Record failed and repaired attempts in `calls()`: tokens, plus a `failed` flag.
+- **No singleton.** Create one `LLM` per request or analysis.
+
+**Data layer**
+- **Transactions.** Repository functions accept a transaction handle as well as the `db`.
+- **Timestamps.** Set `updated_at` on every update.
+- **Indexes.** Add indexes on `user_id` for analyses, resumes, user_facts and quiz_attempts.
+
+**API and CI**
+- **`/api/me`.** Add a timeout to its GitHub call, and guard against an invalid session id.
+- **GitHub errors.** Tell 401 (revoked token) apart from 403/429 (rate limit), and show the reset time.
+- **CI.** Add `permissions: contents: read` and a `next build` step.
+
+**Later stages**
+- **Stage 4:** `--green-ink` on `--green-soft` is only 3.9:1. Fix it before any text uses that pair.
+- **Stage 6:** the quota increment is guarded (`WHERE free_analyses_used < 3`), and the move to `ready` is idempotent, in one transaction.
+- **Stage 6:** never show or log raw provider error messages in the bring-your-own-key flow, because they can include masked keys.
