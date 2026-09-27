@@ -10,6 +10,8 @@ describe("extractJson", () => {
     ["prose before and after", 'Sure! {"a":{"b":[1,2]}} Hope that helps.', { a: { b: [1, 2] } }],
     ["braces inside strings", '{"code":"if (x) { y(); }","q":"\\"}"}', { code: "if (x) { y(); }", q: '"}' }],
     ["top-level array", '[{"a":1}]', [{ a: 1 }]],
+    ["JSON only inside a think block", '<think>{"a":1}</think>', { a: 1 }],
+    ["a literal </think> inside a JSON string", '{"note":"the tag is </think> here","a":1}', { note: "the tag is </think> here", a: 1 }],
   ])("handles %s", (_name, input, expected) => {
     expect(extractJson(input)).toEqual(expected);
   });

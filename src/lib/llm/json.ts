@@ -1,16 +1,12 @@
-export function extractJson(text: string): unknown {
-  const close = text.lastIndexOf("</think>");
-  const afterThinking = close >= 0 ? text.slice(close + "</think>".length) : text.replace(/<think>[\s\S]*?<\/think>/gi, "");
-  const cleaned = afterThinking.replace(/```(?:json)?/gi, "");
-
-  const start = cleaned.search(/[{[]/);
+function scanFirstJson(text: string): unknown {
+  const start = text.search(/[{[]/);
   if (start < 0) throw new SyntaxError("No JSON found in model output");
 
   let depth = 0;
   let inString = false;
   let escaped = false;
-  for (let i = start; i < cleaned.length; i++) {
-    const ch = cleaned[i];
+  for (let i = start; i < text.length; i++) {
+    const ch = text[i];
     if (inString) {
       if (escaped) escaped = false;
       else if (ch === "\\") escaped = true;
@@ -21,8 +17,45 @@ export function extractJson(text: string): unknown {
     else if (ch === "{" || ch === "[") depth++;
     else if (ch === "}" || ch === "]") {
       depth--;
-      if (depth === 0) return JSON.parse(cleaned.slice(start, i + 1));
+      if (depth === 0) return JSON.parse(text.slice(start, i + 1));
     }
   }
   throw new SyntaxError("Unterminated JSON in model output");
+}
+
+export function extractJson(text: string): unknown {
+  let firstError: Error | null = null;
+
+  const candidates = [
+    () => {
+      const withoutThinking = text.replace(/<think>[\s\S]*?<\/think>/gi, "");
+      const cleaned = withoutThinking.replace(/```(?:json)?/gi, "");
+      return scanFirstJson(cleaned);
+    },
+    () => {
+      const hasClosingThinkWithoutOpening = text.includes("</think>") && !text.includes("<think>");
+      if (hasClosingThinkWithoutOpening) {
+        const afterThinking = text.slice(text.lastIndexOf("</think>") + "</think>".length);
+        const cleaned = afterThinking.replace(/```(?:json)?/gi, "");
+        return scanFirstJson(cleaned);
+      }
+      throw new SyntaxError("No JSON found in model output");
+    },
+    () => {
+      const cleaned = text.replace(/```(?:json)?/gi, "");
+      return scanFirstJson(cleaned);
+    },
+  ];
+
+  for (const candidate of candidates) {
+    try {
+      return candidate();
+    } catch (e) {
+      if (firstError === null) {
+        firstError = e as Error;
+      }
+    }
+  }
+
+  throw firstError || new SyntaxError("No JSON found in model output");
 }
