@@ -3,4 +3,4 @@
   font: 500 13px/1 var(--font-body), system-ui, sans-serif; letter-spacing: 0.04em; text-transform: uppercase;
 }
 .outline { border: 1.5px solid var(--green); color: var(--green-ink); background: transparent; }
-.filled { background: var(--green); color: #fff; border: 1.5px solid var(--green); }
+.filled { background: var(--green); color: var(--on-green); border: 1.5px solid var(--green); }

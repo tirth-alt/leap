@@ -9,7 +9,7 @@
 .button:active { transform: translateY(0); box-shadow: none; }
 .button:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
 .dark { background: var(--ink); color: var(--cream); }
-.green { background: var(--green); color: #fff; }
+.green { background: var(--green); color: var(--on-green); }
 .outline { background: transparent; color: var(--ink); border-color: var(--ink); }
 .arrow {
   display: inline-grid; place-items: center; width: 28px; height: 28px; margin-right: -10px;
