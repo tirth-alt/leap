@@ -8,6 +8,7 @@
   --muted: #5f5e57;
   --line: #e7e0c6;
   --coral: #e8603c;
+  --danger: #b3261e;
   --on-green: #10231a;
   --radius-lg: 24px;
   --radius-md: 14px;
@@ -25,6 +26,7 @@
     --ink: #edebe3;
     --muted: #a6a498;
     --line: #2d2f29;
+    --danger: #ff8a80;
     --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.25);
     color-scheme: dark;
   }

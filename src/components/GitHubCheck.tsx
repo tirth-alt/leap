@@ -33,7 +33,7 @@ export function GitHubCheck() {
             : "Signed in, but the GitHub token could not be read. Sign out and back in."}
         </p>
       )}
-      {state === "error" && <p role="alert" style={{ margin: 0, color: "var(--coral)" }}>Check failed. Try signing in again.</p>}
+      {state === "error" && <p role="alert" style={{ margin: 0, color: "var(--danger)" }}>Check failed. Try signing in again.</p>}
     </div>
   );
 }
