@@ -9,7 +9,7 @@ Leap is a **Next.js 16 App Router app** deployed on Vercel. Two folders matter m
 - **`app/`** — pages and API routes. Next.js turns each `page.tsx` into a URL and each `route.ts` into an HTTP endpoint, based purely on folder names (this is called *file-based routing*).
 - **`src/`** — everything else: the design system, the database layer, the auth logic, and the "framework-free" model (LLM) layer. Nothing in `src/` knows it's running inside Next.js — it's plain TypeScript that `app/` imports and calls.
 
-The rule of thumb: **`app/` is thin, `src/` has the logic.** A page or route handler in `app/` mostly imports functions from `src/` and wires them together; the interesting code (and almost all the unit tests) live under `src/`.
+The rule of thumb: **`app/` is thin, `src/` has the logic.** A page or route handler in `app/` mostly imports functions from `src/` and wires them together; the interesting code lives under `src/`, and almost all the unit tests live under `tests/`.
 
 Tests live in `tests/`, mirroring the `src/` folder structure (e.g. `src/db/users.ts` is tested by `tests/db/users.test.ts`). Nothing under `tests/` touches the network or a real database — see [`stage-1.md`](stage-1.md#how-the-tests-work) for how that works.
 
