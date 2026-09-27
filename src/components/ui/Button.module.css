@@ -1,0 +1,18 @@
+.button {
+  display: inline-flex; align-items: center; gap: 10px;
+  font: 600 15px/1 var(--font-body), system-ui, sans-serif;
+  padding: 12px 20px; border-radius: var(--radius-pill);
+  border: 1.5px solid transparent; cursor: pointer; text-decoration: none;
+  transition: transform 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
+}
+.button:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+.button:active { transform: translateY(0); box-shadow: none; }
+.button:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+.dark { background: var(--ink); color: var(--cream); }
+.green { background: var(--green); color: #fff; }
+.outline { background: transparent; color: var(--ink); border-color: var(--ink); }
+.arrow {
+  display: inline-grid; place-items: center; width: 28px; height: 28px; margin-right: -10px;
+  border-radius: 50%; background: var(--cream); color: var(--ink);
+}
+.outline .arrow { background: var(--ink); color: var(--cream); }

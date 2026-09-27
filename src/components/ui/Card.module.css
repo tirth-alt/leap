@@ -1,0 +1,4 @@
+.card { border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow); border: 1px solid var(--line); }
+.surface { background: var(--surface); }
+.cream { background: var(--cream); }
+.green { background: var(--green-soft); border-color: transparent; }

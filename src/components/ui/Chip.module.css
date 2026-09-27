@@ -1,0 +1,6 @@
+.chip {
+  display: inline-flex; align-items: center; padding: 8px 16px; border-radius: var(--radius-pill);
+  font: 500 13px/1 var(--font-body), system-ui, sans-serif; letter-spacing: 0.04em; text-transform: uppercase;
+}
+.outline { border: 1.5px solid var(--green); color: var(--green-ink); background: transparent; }
+.filled { background: var(--green); color: #fff; border: 1.5px solid var(--green); }
