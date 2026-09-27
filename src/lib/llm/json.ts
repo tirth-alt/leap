@@ -1,7 +1,4 @@
-function scanFirstJson(text: string): unknown {
-  const start = text.search(/[{[]/);
-  if (start < 0) throw new SyntaxError("No JSON found in model output");
-
+function scanFrom(text: string, start: number): unknown {
   let depth = 0;
   let inString = false;
   let escaped = false;
@@ -21,6 +18,23 @@ function scanFirstJson(text: string): unknown {
     }
   }
   throw new SyntaxError("Unterminated JSON in model output");
+}
+
+function scanFirstJson(text: string): unknown {
+  let start = text.search(/[{[]/);
+  if (start < 0) throw new SyntaxError("No JSON found in model output");
+
+  let firstError: Error | null = null;
+  while (start >= 0) {
+    try {
+      return scanFrom(text, start);
+    } catch (e) {
+      if (firstError === null) firstError = e as Error;
+      const next = text.slice(start + 1).search(/[{[]/);
+      start = next < 0 ? -1 : start + 1 + next;
+    }
+  }
+  throw firstError || new SyntaxError("No JSON found in model output");
 }
 
 export function extractJson(text: string): unknown {

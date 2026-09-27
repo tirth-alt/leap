@@ -1,11 +1,7 @@
 {
   "name": "leap",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
+  "description": "Résumés are claims. GitHub is evidence. An evidence-backed AI career guide.",
   "scripts": {
     "test": "vitest run",
     "dev": "next dev",
@@ -16,9 +12,7 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "UNLICENSED",
   "type": "module",
   "engines": {
     "node": ">=22"
@@ -46,5 +40,6 @@
   },
   "overrides": {
     "esbuild": "0.28.2"
-  }
+  },
+  "private": true
 }
